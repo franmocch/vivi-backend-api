@@ -14,6 +14,7 @@ const app = express();
 app.use(helmet());
 // Limiters  of request
 app.use('/api', createGlobalLimiter());
+app.use('/api/v1', userRouter);
 
 // Middleware to parse incoming JSON requests
 app.use(express.json({ limit: '10kb' }));

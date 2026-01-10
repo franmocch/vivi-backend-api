@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
-const hashToken = require('../security/hashToken ');
+const hashToken = require('../security/hashToken');
 const { setTokenCookie } = require('../security/cookieOption');
 
 const createSendToken = (user, statusCode, res) => {

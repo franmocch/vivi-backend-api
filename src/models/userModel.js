@@ -3,7 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const AppError = require('../utils/appError');
-const hashToken = require('../security/hashToken ');
+const hashToken = require('../security/hashToken');
 
 const onlyLetters = (v) => /^[\p{L}\s'-]+$/u.test(v || ''); // letters  unicode + space/'-
 
