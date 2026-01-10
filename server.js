@@ -1,0 +1,34 @@
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const logAndExit = require('./utils/processLogger');
+const app = require('./app');
+
+// Must be at the top of the file
+process.on('uncaughtException', (err) => logAndExit('UNCAUGHT EXCEPTION', err));
+
+process.on('unhandledRejection', (err) =>
+  logAndExit('UNHANDLED REJECTION', err)
+);
+
+dotenv.config({ path: './config.env' });
+
+// ---- DB Connection ----
+const DB = process.env.DATABASE?.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
+
+mongoose
+  .connect(DB)
+  .then(() => console.log('DB connection successful!'))
+  .catch((err) => {
+    // If the DB fails at startup, exit process (no server to keep alive)
+    console.error('DB connection error 💥', err.message || err);
+    process.exit(1);
+  });
+
+// ---- Start HTTP server ----
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
