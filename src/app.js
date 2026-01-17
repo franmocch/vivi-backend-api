@@ -41,7 +41,7 @@ app.use('/api/v1', userRouter);
 
 // Handle all undefined routes (404 Not Found)
 // This middleware will be triggered if no previous route matches
-app.all((req, res, next) => {
+app.use((req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
