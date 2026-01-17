@@ -1,7 +1,14 @@
 {
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon src/server.js",
-    "start:prod": "cross-env NODE_ENV=production node src/server.js"
+    "start:prod": "cross-env NODE_ENV=production node src/server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --check",
+    "format:write": "prettier . --write",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:ci": "cross-env NODE_ENV=test jest --ci --runInBand --coverage",
+    "ci": "npm run lint && npm run format && npm run test:ci"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -28,6 +35,8 @@
   },
   "devDependencies": {
     "cross-env": "^10.0.0",
-    "nodemon": "^3.1.10"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^6.3.4"
   }
 }

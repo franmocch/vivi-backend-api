@@ -1,7 +1,8 @@
 {
   "env": {
     "node": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "parserOptions": {
     "ecmaVersion": 2021,
@@ -25,6 +26,14 @@
     "prettier/prettier": "error",
     "node/no-unsupported-features/es-syntax": "off"
   },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**", "**/*.test.js", "**/*.spec.js"],
+      "rules": {
+        "node/no-unpublished-require": "off"
+      }
+    }
+  ],
   "settings": {
     "node": {
       "version": ">=22.0.0"

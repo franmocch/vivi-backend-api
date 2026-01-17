@@ -12,9 +12,11 @@ const app = express();
 
 //Security HTTP headers
 app.use(helmet());
+
 // Limiters  of request
-app.use('/api', createGlobalLimiter());
-app.use('/api/v1', userRouter);
+if (process.env.NODE_ENV !== 'test') {
+  app.use('/api', createGlobalLimiter());
+}
 
 // Middleware to parse incoming JSON requests
 app.use(express.json({ limit: '10kb' }));
@@ -30,13 +32,16 @@ app.use(
   })
 );
 // Mount the user router on the specified path
-
+// Health check (for CI & monitoring)
+app.get('/api/v1/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 //app.use('/api/v1/users', userRouter);
 app.use('/api/v1', userRouter);
 
 // Handle all undefined routes (404 Not Found)
 // This middleware will be triggered if no previous route matches
-app.use((req, res, next) => {
+app.all((req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
