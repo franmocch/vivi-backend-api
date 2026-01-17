@@ -53,7 +53,8 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 exports.getMe = (req, _res, next) => {
-  req.params.id = req.user.id;
+  req.params.id = req.user._id;
+
   next();
 };
 
