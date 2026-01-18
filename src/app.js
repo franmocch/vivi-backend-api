@@ -5,6 +5,7 @@ const express = require('express');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const swaggerUi = require('swagger-ui-express');
+const basicAuth = require('express-basic-auth');
 
 // ─────────────────────────────
 // Internal libraries / config
@@ -60,8 +61,13 @@ app.use(
 // API documentation (Swagger)
 // ─────────────────────────────
 
-// Public Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Public Swagger UI  and  Protecting swagger with  Auth
+
+const docsAuth = basicAuth({
+  users: { [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS },
+  challenge: true,
+});
+app.use('/api-docs', docsAuth, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ─────────────────────────────
 // Health check (monitoring & CI)
