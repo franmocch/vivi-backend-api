@@ -16,6 +16,7 @@ This project is intended as a learning and portfolio project, following real-wor
 - Rate limiting
 - Input sanitization (NoSQL injection & XSS)
 - Centralized error handling
+- Swagger / OpenAPI documentation
 
 ---
 
@@ -130,6 +131,12 @@ Experimental or local-only files are intentionally excluded from the repository.
 
 ---
 
+## 📚 API Documentation
+
+Swagger UI available at:
+
+http://localhost:3000/api-docs
+
 ## 📌 Project Status
 
 Work in progress.
@@ -137,5 +144,4 @@ Work in progress.
 Planned improvements:
 
 - Automated tests
-- API documentation (Swagger / OpenAPI)
 - CI pipeline
