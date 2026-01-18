@@ -21,14 +21,14 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: Franco
+ *                 example: xxx
  *               lastName:
  *                 type: string
- *                 example: Moccehgiani
+ *                 example: xxxx
  *               email:
  *                 type: string
  *                 format: email
- *                 example: franco@example.com
+ *                 example: xxx@example.com
  *               password:
  *                 type: string
  *                 format: password
@@ -80,7 +80,7 @@
  *               email:
  *                 type: string
  *                 format: email
- *                 example: franco@example.com
+ *                 example: xxx@example.com
  *               password:
  *                 type: string
  *                 format: password
@@ -117,7 +117,7 @@
  *               email:
  *                 type: string
  *                 format: email
- *                 example: franco@example.com
+ *                 example: xxx@example.com
  *     responses:
  *       200:
  *         description: Reset email sent (if user exists)

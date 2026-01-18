@@ -1,5 +1,10 @@
+// Swagger spec generator (OpenAPI 3) using swagger-jsdoc
+
 const path = require('path');
 const swaggerJsdoc = require('swagger-jsdoc');
+
+const baseUrl =
+  process.env.PUBLIC_BASE_URL || `http://localhost:${process.env.PORT}`;
 
 const options = {
   definition: {
@@ -9,10 +14,19 @@ const options = {
       version: '1.0.0',
       description: 'Backend API for user management, auth and roles',
     },
-    servers: [{ url: '/api/v1' }],
+    servers: [
+      {
+        url: `${baseUrl}/api/v1`,
+        description: 'Current environment',
+      },
+    ],
     components: {
       securitySchemes: {
-        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
       },
       schemas: {
         ErrorResponse: {
@@ -54,6 +68,8 @@ const options = {
     },
   },
 
+  // Reads Swagger JSDoc annotations from your route swagger files.
+  // Example: src/auth.swagger.js, src/users.swagger.js, etc.
   apis: [path.join(__dirname, '*.swagger.js')],
 };
 
