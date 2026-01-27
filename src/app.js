@@ -37,7 +37,7 @@ app.use(helmet());
 
 // Enable CORS
 app.use(corsMiddleware);
-app.options('*', corsMiddleware);
+app.options(/.*/, corsMiddleware);
 
 // Global rate limiter (disabled in tests)
 if (process.env.NODE_ENV !== 'test') {
