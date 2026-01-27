@@ -4,13 +4,12 @@
 const express = require('express');
 const helmet = require('helmet');
 const hpp = require('hpp');
-const swaggerUi = require('swagger-ui-express');
-const basicAuth = require('express-basic-auth');
 
 // ─────────────────────────────
-// Internal libraries / config
+// Internal config & libraries
 // ─────────────────────────────
-const swaggerSpec = require('./docs/swagger/index');
+const corsMiddleware = require('./config/cors');
+const setupSwagger = require('./config/swagger');
 const mongoSanitize = require('./security/mongoSanitize');
 const xssSanitize = require('./security/xssSanitize');
 const { createGlobalLimiter } = require('./security/RateLimiter');
@@ -34,6 +33,9 @@ const app = express();
 
 // Security HTTP headers
 app.use(helmet());
+
+// Enable CORS
+app.use(corsMiddleware);
 
 // Global rate limiter (disabled in tests)
 if (process.env.NODE_ENV !== 'test') {
@@ -62,13 +64,8 @@ app.use(
 // API documentation (Swagger)
 // ─────────────────────────────
 
-// Public Swagger UI  and  Protecting swagger with  Auth
-
-const docsAuth = basicAuth({
-  users: { [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS },
-  challenge: true,
-});
-app.use('/api-docs', docsAuth, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Swagger setup (configurable via env)
+setupSwagger(app);
 
 // ─────────────────────────────
 // Health check (monitoring & CI)
@@ -82,6 +79,7 @@ app.get('/api/v1/health', (req, res) => {
 // ─────────────────────────────
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
+
 // ─────────────────────────────
 // 404 handler
 // ─────────────────────────────

@@ -1,34 +1,77 @@
-const mongoose = require('mongoose');
+// ─────────────────────────────
+// Environment variables
+// ─────────────────────────────
 const dotenv = require('dotenv');
+
+// Load env vars BEFORE anything else
+dotenv.config({ path: './src/config/config.env' });
+
+// ─────────────────────────────
+// External dependencies
+// ─────────────────────────────
+const mongoose = require('mongoose');
+
+// ─────────────────────────────
+// Internal utilities
+// ─────────────────────────────
 const logAndExit = require('./utils/processLogger');
 
-// Must be at the top of the file
-process.on('uncaughtException', (err) => logAndExit('UNCAUGHT EXCEPTION', err));
-process.on('unhandledRejection', (err) =>
-  logAndExit('UNHANDLED REJECTION', err)
-);
+// ─────────────────────────────
+// Process-level error handling
+// ─────────────────────────────
+process.on('uncaughtException', (err) => {
+  logAndExit('UNCAUGHT EXCEPTION', err);
+});
 
-// Load env vars BEFORE importing app
-dotenv.config({ path: './config.env' });
+process.on('unhandledRejection', (err) => {
+  logAndExit('UNHANDLED REJECTION', err);
+});
 
+// ─────────────────────────────
+// App import (AFTER env is loaded)
+// ─────────────────────────────
 const app = require('./app');
 
-// ---- DB Connection ----
+// ─────────────────────────────
+// Database connection
+// ─────────────────────────────
 const DB = process.env.DATABASE?.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
 
+if (!DB) {
+  console.error(
+    '❌ Missing DATABASE or DATABASE_PASSWORD. Check src/config/config.env'
+  );
+  process.exit(1);
+}
+
 mongoose
   .connect(DB)
-  .then(() => console.log('DB connection successful!'))
+  .then(() => {
+    console.log('✅ DB connection successful!');
+  })
   .catch((err) => {
-    console.error('DB connection error 💥', err.message || err);
+    console.error('💥 DB connection error', err.message || err);
     process.exit(1);
   });
 
-// ---- Start HTTP server ----
+// ─────────────────────────────
+// Start HTTP server
+// ─────────────────────────────
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+
+const server = app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});
+
+// ─────────────────────────────
+// Graceful shutdown (optional but pro)
+// ─────────────────────────────
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM received. Shutting down gracefully...');
+  server.close(() => {
+    process.exit(0);
+  });
 });

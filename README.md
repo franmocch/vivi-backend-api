@@ -1,8 +1,8 @@
 # User Microservice Backend API
 
-Backend API built with **Node.js**, **Express** and **MongoDB** for user management, authentication and authorization.
+Backend API built with **Node.js**, **Express** and **MongoDB** that provides a complete user management and authentication system.
 
-This project is intended as a learning and portfolio project, following real-world backend practices.
+The API is designed as a reusable microservice that can be integrated into different applications, handling user registration, authentication, authorization and security concerns in a centralized way.
 
 ---
 
@@ -17,6 +17,7 @@ This project is intended as a learning and portfolio project, following real-wor
 - Input sanitization (NoSQL injection & XSS)
 - Centralized error handling
 - Swagger / OpenAPI documentation
+- Configurable CORS support
 
 ---
 
@@ -57,18 +58,31 @@ npm install
 
 ### 3️⃣ Environment variables
 
-Create a `config.env` file in the root directory based on the example file:
+Create a `config.env` file inside `src/config/` based on the example file:
 
 ```bash
-cp config.env.example config.env
+cp src/config/config.env.example src/config/config.env
 ```
 
 Fill in the required values:
 
-- MongoDB connection string
-- JWT secret
-- JWT expiration
-- Email credentials (Mailtrap recommended for development)
+```env
+PORT=3000
+NODE_ENV=development
+
+DATABASE_URL=your_mongo_connection_string
+
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=90d
+
+CORS_ORIGINS=http://localhost:5173
+```
+
+The server reads environment variables from:
+
+```
+src/config/config.env
+```
 
 ---
 
@@ -94,6 +108,20 @@ You can test the API using:
   http://localhost:3000/api-docs
 - API clients like Postman, Insomnia or Thunder Client
 - A frontend application consuming the API
+
+---
+
+## 🌐 CORS Configuration
+
+CORS is configured via environment variables.
+
+Allowed origins are defined using:
+
+```env
+CORS_ORIGINS=http://localhost:5173,https://your-frontend.com
+```
+
+This allows the backend to support multiple frontends without code changes.
 
 ---
 
@@ -153,9 +181,28 @@ Some routes are protected and require authentication and/or specific roles.
 
 Swagger UI available at:
 
-http://localhost:3000/api-docs
+- Local: http://localhost:3000/api-docs
+- Production: https://vivi-backend-api.onrender.com/api-docs
+
+Swagger UI is protected via Basic Auth in production.
 
 ---
+
+## 📁 Project Structure
+
+```txt
+src/
+ ├─ config/        # Application and server configuration (env, CORS, Swagger , database connection)
+ ├─ docs/          # API documentation and OpenAPI specifications
+ ├─ security/      # Security-related middleware (rate limiting, sanitization, protections)
+ ├─ controllers/   # Request handlers containing business logic
+ ├─ routes/        # API route definitions and endpoint mapping
+ ├─ models/        # Database schemas and data models (Mongoose)
+ ├─ utils/         # Shared utility functions and helpers
+ └─ app.js         # Express application initialization and middleware setup
+```
+
+---z
 
 ## 📌 Project Status
 
