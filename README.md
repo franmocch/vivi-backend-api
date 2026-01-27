@@ -1,4 +1,4 @@
-# Vivi Backend API
+# User Microservice Backend API
 
 Backend API built with **Node.js**, **Express** and **MongoDB** for user management, authentication and authorization.
 
@@ -30,9 +30,13 @@ This project is intended as a learning and portfolio project, following real-wor
 
 ---
 
-## ⚙️ Setup & Installation
+## 📦 How to Download and Run the Backend
 
-### 1️⃣ Clone the repository
+This project is a standalone backend application.
+
+### 1️⃣ Download the project
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/franmocch/vivi-backend-api.git
@@ -42,6 +46,8 @@ cd vivi-backend-api
 ---
 
 ### 2️⃣ Install dependencies
+
+Make sure you have **Node.js (v18 or higher)** installed.
 
 ```bash
 npm install
@@ -57,15 +63,16 @@ Create a `config.env` file in the root directory based on the example file:
 cp config.env.example config.env
 ```
 
-Fill in your own values:
+Fill in the required values:
 
 - MongoDB connection string
 - JWT secret
+- JWT expiration
 - Email credentials (Mailtrap recommended for development)
 
 ---
 
-### 4️⃣ Run the project
+### 4️⃣ Run the backend server
 
 ```bash
 npm run dev
@@ -76,6 +83,17 @@ The server will start on:
 ```
 http://localhost:3000
 ```
+
+---
+
+### 5️⃣ Verify the backend is running
+
+You can test the API using:
+
+- Swagger UI  
+  http://localhost:3000/api-docs
+- API clients like Postman, Insomnia or Thunder Client
+- A frontend application consuming the API
 
 ---
 
@@ -93,41 +111,41 @@ Some routes are protected and require authentication and/or specific roles.
 
 ---
 
-## 📡 API Endpoints (main)
+## 📡 API Endpoints (Main)
 
 ### Auth
 
-| Method | Endpoint             | Description       |
-| ------ | -------------------- | ----------------- |
-| POST   | /api/v1/users/signup | Register new user |
-| POST   | /api/v1/users/login  | Login user        |
+| Method | Endpoint                           | Description                 |
+| -----: | ---------------------------------- | --------------------------- |
+|   POST | /api/v1/auth/signup                | Register new user           |
+|   POST | /api/v1/auth/login                 | Login user                  |
+|   POST | /api/v1/auth/forgot-password       | Request password reset      |
+|  PATCH | /api/v1/auth/reset-password/:token | Reset password              |
+|  PATCH | /api/v1/auth/update-password       | Update password (logged in) |
 
 ---
 
-### Users
+### Users (Authenticated)
 
-| Method | Endpoint               | Description              |
-| ------ | ---------------------- | ------------------------ |
-| GET    | /api/v1/users/me       | Get current user profile |
-| PATCH  | /api/v1/users/updateMe | Update current user      |
-| DELETE | /api/v1/users/deleteMe | Deactivate user          |
-
-> Some routes are restricted to admin roles.
+| Method | Endpoint         | Description              |
+| -----: | ---------------- | ------------------------ |
+|    GET | /api/v1/users/me | Get current user profile |
+|  PATCH | /api/v1/users/me | Update current user      |
+| DELETE | /api/v1/users/me | Deactivate current user  |
 
 ---
 
-## 🧪 Development Notes
+### Users (Admin)
 
-This project follows a layered architecture:
+| Method | Endpoint          | Description     |
+| -----: | ----------------- | --------------- |
+|    GET | /api/v1/users     | Get all users   |
+|   POST | /api/v1/users     | Create new user |
+|    GET | /api/v1/users/:id | Get user by ID  |
+|  PATCH | /api/v1/users/:id | Update user     |
+| DELETE | /api/v1/users/:id | Delete user     |
 
-- routes
-- controllers
-- models
-- utils
-
-Configuration is handled via environment variables.
-
-Experimental or local-only files are intentionally excluded from the repository.
+> Admin routes are restricted to users with `admin` or `superadmin` roles.
 
 ---
 
@@ -136,6 +154,8 @@ Experimental or local-only files are intentionally excluded from the repository.
 Swagger UI available at:
 
 http://localhost:3000/api-docs
+
+---
 
 ## 📌 Project Status
 

@@ -18,6 +18,7 @@ const { createGlobalLimiter } = require('./security/RateLimiter');
 // ─────────────────────────────
 // Routes & controllers
 // ─────────────────────────────
+const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
@@ -79,8 +80,8 @@ app.get('/api/v1/health', (req, res) => {
 // ─────────────────────────────
 // API routes
 // ─────────────────────────────
-app.use('/api/v1', userRouter);
-
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 // ─────────────────────────────
 // 404 handler
 // ─────────────────────────────

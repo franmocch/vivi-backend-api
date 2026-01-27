@@ -6,17 +6,19 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const baseUrl =
   process.env.PUBLIC_BASE_URL || `http://localhost:${process.env.PORT}`;
 
+const appVersionUrl = process.env.APP_VERSION_URL || '/api/v1';
+
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Vivi API',
+      title: 'Microservice User API',
       version: '1.0.0',
       description: 'Backend API for user management, auth and roles',
     },
     servers: [
       {
-        url: `${baseUrl}/api/v1`,
+        url: `${baseUrl}${appVersionUrl}`,
         description: 'Current environment',
       },
     ],
@@ -51,9 +53,9 @@ const options = {
                   type: 'object',
                   properties: {
                     id: { type: 'string', example: '65f1c2a1b2c3d4e5f6a7b8c9' },
-                    name: { type: 'string', example: 'Franco' },
-                    lastName: { type: 'string', example: 'Moccehgiani' },
-                    email: { type: 'string', example: 'franco@example.com' },
+                    name: { type: 'string', example: 'xxx' },
+                    lastName: { type: 'string', example: 'xxx' },
+                    email: { type: 'string', example: 'xxx@example.com' },
                     role: { type: 'string', example: 'user' },
                   },
                 },
