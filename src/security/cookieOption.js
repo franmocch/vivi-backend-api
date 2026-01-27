@@ -3,17 +3,21 @@
  * @param {Object} res - Express response object
  * @param {String} token - JWT token
  */
+/**
+ * Set JWT as a secure cookie
+ */
 exports.setTokenCookie = () => {
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true, // Client JS cannot access the cookie
-    secure: process.env.NODE_ENV === 'production', // Only sent via HTTPS in prod
-    sameSite: 'lax', // Mitigate CSRF; use 'strict' if FE and BE same domain
-  };
+  const isProd = process.env.NODE_ENV === 'production';
 
-  return cookieOptions;
+  return {
+    expires: new Date(
+      Date.now() +
+        Number(process.env.JWT_COOKIE_EXPIRES_IN || 90) * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: isProd, // HTTPS only in production (Render)
+    sameSite: isProd ? 'none' : 'lax', // 👈 REQUIRED for cross-site cookies
+  };
 };
 /**
  * Clear JWT cookie (logout)

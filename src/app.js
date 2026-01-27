@@ -26,6 +26,7 @@ const AppError = require('./utils/appError');
 // App initialization
 // ─────────────────────────────
 const app = express();
+app.set('trust proxy', 1);
 
 // ─────────────────────────────
 // Global security middlewares
@@ -36,6 +37,7 @@ app.use(helmet());
 
 // Enable CORS
 app.use(corsMiddleware);
+app.options('*', corsMiddleware);
 
 // Global rate limiter (disabled in tests)
 if (process.env.NODE_ENV !== 'test') {
